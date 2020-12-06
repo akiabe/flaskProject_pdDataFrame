@@ -1,8 +1,9 @@
-from flask import Flask
+import flask
 from flask import render_template
+from flask import send_file
 import pandas as pd
 
-app = Flask(__name__)
+app = flask.Flask(__name__)
 
 df = pd.read_csv("static/sample.csv")
 header = df.columns
@@ -16,5 +17,13 @@ def index():
         record=record
     )
 
+@app.route('/download')
+def download():
+    path = "static/sample.csv"
+    return send_file(
+        path,
+        as_attachment=True
+    )
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
